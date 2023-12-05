@@ -52,6 +52,8 @@ or
             sorted_keys = sorted(counts, key=counts.get)
             st.error("One of the topics with highest re-identification we found is:\t"+np.random.choice(sorted_keys[-5:]))
             st.success("One of the topics with lowest re-identification we found is:\t"+np.random.choice(sorted_keys[:5]))
+    st.markdown("**Team:** Aman Priyanshu, Yash Maurya, Suriya Ganesh, and Vy Tran")
+    st.markdown("**Under Supervision of:** Prof. Hana Habib and Prof. Norman Sadeh  & TA Saranya Vijayakumar")
 
 if __name__ == "__main__":
     main()
