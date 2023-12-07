@@ -5,6 +5,11 @@ from topics import topics
 
 answer_options = topics
 
+with open("scores_per_topics.json", "r") as f:
+    counts = json.load(f)
+
+sorted_keys = sorted(counts, key=counts.get)
+
 def main():
     st.title("Umasking Threats! Topics API")
 
@@ -26,14 +31,20 @@ or
 (b) Select three topics which interest you the most!
             """
             st.markdown(question_1)
-        topic_1 = st.selectbox("Topic-1", answer_options)
-        topic_2 = st.selectbox("Topic-2", answer_options)
-        topic_3 = st.selectbox("Topic-3", answer_options)
-        
+
+            # Use st.selectbox for user selection
+            selected_topics = st.session_state.get("selected_topics", [])
+            selected_topics.append(st.selectbox("Topic-1", answer_options, key="topic_1",  index=answer_options.index(np.random.choice(sorted_keys[-np.random.randint(1,150):]))))
+            selected_topics.append(st.selectbox("Topic-2", answer_options, key="topic_2", index=answer_options.index(np.random.choice(sorted_keys[-np.random.randint(1,len(sorted_keys)):]))))
+            selected_topics.append(st.selectbox("Topic-3", answer_options, key="topic_3", index=answer_options.index(np.random.choice(sorted_keys[:]))))
+            st.session_state.selected_topics = selected_topics[-3:]
+
         submitted = st.form_submit_button("Submit")
         if submitted:
-            with open("scores_per_topics.json", "r") as f:
-                counts = json.load(f)
+            # Retrieve selected topics from session_state
+            topic_1, topic_2, topic_3 = st.session_state.selected_topics
+            # st.info(f"You selected:\n```\nTopic 1: {topic_1}\nTopic 2: {topic_2}\nTopic 3: {topic_3}\n```")
+
             c_1 = counts.get(topic_1, 0)
             c_2 = counts.get(topic_2, 0)
             c_3 = counts.get(topic_3, 0)
@@ -49,9 +60,10 @@ or
                 st.error("You have a re-identification chance of more than 75%. Therefore, you are **likely to be re-identified** based on the dataset we experimented with.")
 
             st.write("**FUN FACT!!**")
-            sorted_keys = sorted(counts, key=counts.get)
-            st.error("One of the topics with highest re-identification we found is:\t"+np.random.choice(sorted_keys[-5:]))
-            st.success("One of the topics with lowest re-identification we found is:\t"+np.random.choice(sorted_keys[:5]))
+            sorted_keys_fun_fact = sorted(counts, key=counts.get)  # Use a different variable name
+            st.error("One of the topics with the highest re-identification we found is:\t"+np.random.choice(sorted_keys_fun_fact[-5:]))
+            st.success("One of the topics with the lowest re-identification we found is:\t"+np.random.choice(sorted_keys_fun_fact[:5]))
+
     st.markdown("**Team:** Aman Priyanshu, Yash Maurya, Suriya Ganesh, and Vy Tran")
     st.markdown("**Under Supervision of:** Prof. Hana Habib and Prof. Norman Sadeh  & TA Saranya Vijayakumar")
 
