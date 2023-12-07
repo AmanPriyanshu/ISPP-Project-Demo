@@ -43,7 +43,7 @@ or
         if submitted:
             # Retrieve selected topics from session_state
             topic_1, topic_2, topic_3 = st.session_state.selected_topics
-            # st.info(f"You selected:\n```\nTopic 1: {topic_1}\nTopic 2: {topic_2}\nTopic 3: {topic_3}\n```")
+            st.info(f"You selected:\n```\nTopic 1: {topic_1}\nTopic 2: {topic_2}\nTopic 3: {topic_3}\n```")
 
             c_1 = counts.get(topic_1, 0)
             c_2 = counts.get(topic_2, 0)
